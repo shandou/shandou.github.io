@@ -38,5 +38,6 @@ DEFAULT_PAGINATION = 10
 # RELATIVE_URLS = True
 STATIC_PATHS = ["images", "extra"]
 EXTRA_PATH_METADATA = {
-    "extra/favicon.ico": {"path": "favicon.ico"},  # and this
+    "extra/favicon.ico": {"path": "favicon.ico"},
+    "extra/custom.css": {"path": "custom.css"},
 }
