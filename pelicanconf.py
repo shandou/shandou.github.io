@@ -41,3 +41,5 @@ EXTRA_PATH_METADATA = {
     "extra/favicon.ico": {"path": "favicon.ico"},
     "extra/custom.css": {"path": "custom.css"},
 }
+
+PAGE_PATHS = ["pages"]
