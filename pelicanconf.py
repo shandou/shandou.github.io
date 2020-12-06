@@ -33,6 +33,7 @@ SOCIAL = (
 )
 
 DEFAULT_PAGINATION = 10
+PATH = "content"
 
 # Uncomment following line if you want document-relative URLs when developing
 # RELATIVE_URLS = True
@@ -45,3 +46,10 @@ EXTRA_PATH_METADATA = {
 PAGE_PATHS = ["pages"]
 DISPLAY_PAGES_ON_MENU = True
 DISPLAY_CATEGORIES_ON_MENU = True
+
+
+ARTICLE_PATHS = [
+    "notes",
+]
+ARTICLE_URL = "notes/{slug}.html"
+ARTICLE_SAVE_AS = "notes/{slug}.html"
