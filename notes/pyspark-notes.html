@@ -41,8 +41,8 @@
 <p>All the code examples were run and tested in Jupyter Lab launched via Azure machine learning service.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># The data path  </span>
 <span class="n">data_path</span> <span class="o">=</span> <span class="p">(</span>  
-    <span class="s2">&quot;https://raw.githubusercontent.com/prateekagrawaliiit/&quot;</span>
-    <span class="s2">&quot;100-Days-of-ML/master/Day%2018/dataset.csv&quot;</span>  
+    <span class="s2">&quot;https://raw.githubusercontent.com/shandou/&quot;</span>
+    <span class="s2">&quot;ml_data_collection/master/classification/titanic.csv&quot;</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -81,7 +81,7 @@
 <h3>Approach 2: Single-step pyspark loading</h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># [IMPORTANT] We need to first add the file path to sparkContextfrom pyspark import SparkFilesspark.sparkContext.addFile(data_path)  </span>
 <span class="n">df_spark</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span>  
-    <span class="s2">&quot;file://&quot;</span> <span class="o">+</span> <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dataset.csv&quot;</span><span class="p">),</span>  
+    <span class="s2">&quot;file://&quot;</span> <span class="o">+</span> <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;titanic.csv&quot;</span><span class="p">),</span>  
     <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>  
 <span class="p">)</span>
 </code></pre></div>
