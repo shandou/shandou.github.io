@@ -20,7 +20,57 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/notes/reading-list.html">Great Books</a></h1>
+                    <h1 class="entry-title"><a href="/notes/neuralnet-notes.html">Rule of thumbs on network configurations for simple MLP</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2021-01-05T00:00:00-08:00">
+                Published: Tue 05 January 2021
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shan-dou.html">Shan Dou</a>
+        </address>
+<p>In <a href="/category/machine-learning.html">Machine Learning</a>.</p>
+<p>tags: <a href="/tag/ml.html">ml</a> <a href="/tag/rule-of-thumb.html">rule-of-thumb</a> </p>
+</footer><!-- /.post-info --><h2>1. "Stretch Pants" Approach</h2>
+<blockquote>
+<p>Just like the number of layers, you can try increasing the number of neurons gradually until the network starts overfitting. But in practice, it’s often simpler and more efficient to pick a model with more layers and neurons than you actually need, then use early stopping and other regularization techniques to prevent it from overfitting. Vincent Vanhoucke, a scientist at Google, has dubbed this the “stretch pants” approach: instead of wasting time looking for pants that perfectly match your size, just use large stretch pants that will shrink down to the right size. With this approach, you avoid bottleneck layers that could ruin your model. On the flip side, if a layer has too few neurons, it will not have enough representational power to preserve all the useful information from the inputs (e.g., a layer with two neurons can only output 2D data, so if it processes 3D data, some information will be lost). No matter how big and powerful the rest of the network is, that information will never be recovere</p>
+</blockquote>
+<p>-- Aurélien Géron [Ref1]</p>
+<h2>2. Better Go Deeper Than Wider</h2>
+<blockquote>
+<p>In general you will get more bang for your buck <strong><em>by increasing the number of layers</em></strong> instead of the number of neurons per layer.</p>
+</blockquote>
+<p>-- Aurélien Géron [Ref1]</p>
+<h2>3. Starter Architecture</h2>
+<h3>Number of Layers:</h3>
+<blockquote>
+<p>Start with two hidden layers (this does not include the last layer)</p>
+</blockquote>
+<p>-- Chitta Ranjan [Ref2]</p>
+<h3>Number of nodes (size) of intermediate layers</h3>
+<blockquote>
+<p>a number from the geometric progression of 2, e.g., 4, 8, 16, 32, … . The first layer should be around half of the number of input data features. The next layer size as half of the previous.</p>
+</blockquote>
+<p>-- -- Chitta Ranjan [Ref2]</p>
+<h2>Reference</h2>
+<ol>
+<li>Aurélien Géron, Sep 2019, "Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow, 2nd Edition", O'Reilly Media, Inc.</li>
+<li>Medium post by Chitta Ranjan, 
+<a href="https://towardsdatascience.com/17-rules-of-thumb-for-building-a-neural-network-93356f9930af">Rules-of-thumb for building a Neural Network</a>, Jul 2019</li>
+</ol>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/notes/reading-list.html" rel="bookmark"
+                           title="Permalink to Great Books">Great Books</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2021-01-05T00:00:00-08:00">
                 Published: Tue 05 January 2021
@@ -31,31 +81,10 @@
         </address>
 <p>In <a href="/category/reading-list.html">Reading List</a>.</p>
 <p>tags: <a href="/tag/reading.html">reading</a> </p>
-</footer><!-- /.post-info --><h2>Machine Learning</h2>
-<p><a href="https://learning.oreilly.com/library/view/hands-on-machine-learning/9781492032632/"><img src="https://learning.oreilly.com/library/cover/9781492032632/"></a></p>
-<p><a href="https://learning.oreilly.com/library/view/python-machine-learning/9781789955750/"><img src="https://learning.oreilly.com/library/cover/9781789955750/"></a></p>
-<p><a href="https://learning.oreilly.com/library/view/deep-learning-with/9781617294433/"><img src="https://learning.oreilly.com/library/cover/9781617294433/"></a></p>
-<p>(Along with <a href="https://learning.oreilly.com/videos/deep-learning-with/9781617294433VE/">video edition</a> on Oreilly)</p>
-<p><a href="https://learning.oreilly.com/library/view/grokking-artificial-intelligence/9781617296185/"><img src="https://learning.oreilly.com/library/cover/9781617296185/"></a></p>
-<p><a href="https://learning.oreilly.com/library/view/deep-learning-illustrated/9780135116821/"><img src="https://learning.oreilly.com/library/cover/9780135116821/"></a></p>
-<hr>
-<h2>Feature Engineering</h2>
-<p><a href="https://learning.oreilly.com/library/view/feature-engineering-for/9781491953235/"><img src="https://learning.oreilly.com/library/cover/9781491953235/"></a></p>
-<hr>
-<h2>Intermediate to Advanced SQL</h2>
-<p><a href="https://learning.oreilly.com/library/view/sql-cookbook-2nd/9781492077435/"><img src="https://learning.oreilly.com/library/cover/9781492077435/"></a></p>
-<hr>
-<h2>Algorithms</h2>
-<p><a href="https://learning.oreilly.com/library/view/classic-computer-science/9781617295980/"><img src="https://learning.oreilly.com/library/cover/9781617295980/"></a></p>
-<p><a href="https://learning.oreilly.com/library/view/grokking-algorithms/9781617292231/"><img src="https://learning.oreilly.com/library/cover/9781617292231/"></a></p>
-<hr>
-<h2>Git (Deeper Dive)</h2>
-<p><a href="https://learning.oreilly.com/library/view/learn-git-in/9781617292415/"><img src="https://learning.oreilly.com/library/cover/9781617292415/"></a></p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</footer><!-- /.post-info -->                <p>Reading list with frequenty update</p>
+                <a class="readmore" href="/notes/reading-list.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
