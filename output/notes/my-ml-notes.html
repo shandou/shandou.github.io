@@ -3,9 +3,11 @@
 <head>
         <meta charset="utf-8" />
         <meta name="generator" content="Pelican" />
-        <title>Notes on XGBoost</title>
+        <title>Rule of thumbs on network configurations for simple MLP</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
-        <meta name="description" content="Notes made when following Josh Starmer's tutorial" />
+      <link rel="alternate" hreflang="en" href="/notes/my-ml-notes.html">
+
+        <meta name="description" content="Notes on rule of thumbs for MLP design" />
 </head>
 
 <body id="index" class="home">
@@ -23,31 +25,49 @@
     <header>
       <h1 class="entry-title">
         <a href="/notes/my-ml-notes.html" rel="bookmark"
-           title="Permalink to Notes on XGBoost">Notes on XGBoost</a></h1>
+           title="Permalink to Rule of thumbs on network configurations for simple MLP">Rule of thumbs on network configurations for simple MLP</a></h1>
     </header>
 
     <div class="entry-content">
 <footer class="post-info">
-        <abbr class="published" title="2020-12-12T00:00:00-08:00">
-                Published: Sat 12 December 2020
+        <abbr class="published" title="2021-01-05T00:00:00-08:00">
+                Published: Tue 05 January 2021
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="/author/shan-dou.html">Shan Dou</a>
         </address>
 <p>In <a href="/category/machine-learning.html">Machine Learning</a>.</p>
-<p>tags: <a href="/tag/ml.html">ml</a> <a href="/tag/xgboost.html">xgboost</a> </p>
-</footer><!-- /.post-info -->      <h2>Key Questions</h2>
+<p>tags: <a href="/tag/ml.html">ml</a> <a href="/tag/rule-of-thumb.html">rule-of-thumb</a> </p>Translations:
+        <a href="/notes/my-ml-notes.html" hreflang="en">en</a>
+
+</footer><!-- /.post-info -->      <h2>1. "Stretch Pants" Approach</h2>
+<blockquote>
+<p>Just like the number of layers, you can try increasing the number of neurons gradually until the network starts overfitting. But in practice, it’s often simpler and more efficient to pick a model with more layers and neurons than you actually need, then use early stopping and other regularization techniques to prevent it from overfitting. Vincent Vanhoucke, a scientist at Google, has dubbed this the “stretch pants” approach: instead of wasting time looking for pants that perfectly match your size, just use large stretch pants that will shrink down to the right size. With this approach, you avoid bottleneck layers that could ruin your model. On the flip side, if a layer has too few neurons, it will not have enough representational power to preserve all the useful information from the inputs (e.g., a layer with two neurons can only output 2D data, so if it processes 3D data, some information will be lost). No matter how big and powerful the rest of the network is, that information will never be recovere</p>
+</blockquote>
+<p>-- Aurélien Géron [Ref1]</p>
+<h2>2. Better Go Deeper Than Wider</h2>
+<blockquote>
+<p>In general you will get more bang for your buck <strong><em>by increasing the number of layers</em></strong> instead of the number of neurons per layer.</p>
+</blockquote>
+<p>-- Aurélien Géron [Ref1]</p>
+<h2>3. Starter Architecture</h2>
+<h3>Number of Layers:</h3>
+<blockquote>
+<p>Start with two hidden layers (this does not include the last layer)</p>
+</blockquote>
+<p>-- Chitta Ranjan [Ref2]</p>
+<h3>Number of nodes (size) of intermediate layers</h3>
+<blockquote>
+<p>a number from the geometric progression of 2, e.g., 4, 8, 16, 32, … . The first layer should be around half of the number of input data features. The next layer size as half of the previous.</p>
+</blockquote>
+<p>-- -- Chitta Ranjan [Ref2]</p>
+<h2>Reference</h2>
 <ol>
-<li>How does xgboost do regression?</li>
-<li>How does xgboost do classification?</li>
-<li>How are xgboost regressor and classifier connected?</li>
-<li>What gives xgboost great performance and efficiency?</li>
-<li>Although xgboost is a powerful library that scales very well to many samples and works for a variety of supervised learning problems, we shouldn't always pick it as your default ML library. There are some situations in which it is not the best option. When should we use xgboost?</li>
-<li>For regressor evaluation: When to use <code>mae</code> and when to use <code>rmse</code>?</li>
+<li>Aurélien Géron, Sep 2019, "Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow, 2nd Edition", O'Reilly Media, Inc.</li>
+<li>Medium post by Chitta Ranjan, 
+<a href="https://towardsdatascience.com/17-rules-of-thumb-for-building-a-neural-network-93356f9930af">Rules-of-thumb for building a Neural Network</a>, Jul 2019</li>
 </ol>
-<hr>
-<p>XGBoost is designed to work with datasets that are large and complex. </p>
     </div><!-- /.entry-content -->
 
   </article>
