@@ -15,6 +15,7 @@
                     <li><a href="/pages/About.html">About</a></li>
                     <li class="active"><a href="/category/data-science.html">Data Science</a></li>
                     <li><a href="/category/machine-learning.html">Machine Learning</a></li>
+                    <li><a href="/category/reading-list.html">Reading List</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 <section id="content" class="body">
@@ -39,20 +40,22 @@
 </footer><!-- /.post-info -->      <h2>Objective</h2>
 <p>To prepare for dataframe manipulations with pyspark, I wanted to first load the titanic dataset with pyspark. Loading csv file directly from local directory is straightforward (one-liner  <code>spark.read.csv("local.csv")</code>  gets the job done), but loading the same dataset via a GitHub URL takes a bit more work and can look foreign for pyspark beginners. This note is entered for my future self, and for anyone else who has similar questions as they start their pyspark journey 😃</p>
 <p>All the code examples were run and tested in Jupyter Lab launched via Azure machine learning service.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># The data path  </span>
+<div class="highlight"><pre><span></span><span class="c1"># The data path  </span>
 <span class="n">data_path</span> <span class="o">=</span> <span class="p">(</span>  
     <span class="s2">&quot;https://raw.githubusercontent.com/shandou/&quot;</span>
     <span class="s2">&quot;ml_data_collection/master/classification/titanic.csv&quot;</span>
 <span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <h2>Preparation: Set up Spark Session</h2>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pyspark</span>  
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyspark</span>  
 <span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
 
 <span class="c1"># Note: this is only one of the approaches to create a spark session  </span>
 <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
-</code></pre></div>
+</pre></div>
+
 
 <h2>CSV Loading: Two Approaches</h2>
 <h3>Approach 1: (Two steps) Load with pandas first, then convert to pyspark dataframe</h3>
@@ -60,40 +63,45 @@
 <li>Pros: The loading step is simple thanks to  <code>pandas.read_csv</code></li>
 <li>Cons: pandas becomes an extra “middle man” and has little to do other than being a file loading helper</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="c1"># 0. import  </span>
+<div class="highlight"><pre><span></span><span class="c1"># 0. import  </span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span><span class="c1"># 1. Load the data as pandas dataframe  </span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span><span class="c1"># 2. Convert to spark dataframe  </span>
 <span class="c1"># [IMPORTANT] At this point, df_spark is only stored locally  </span>
 <span class="c1"># and not yet registered into the spark session&#39;s catalog.   </span>
 <span class="c1"># Without additonal steps, spark session methods such as ``.sql()`` will throw errors  </span>
 <span class="n">df_spark</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>At the end of step2, although the Spark data loading has been achieved, it is not yet locally visible. In this case, when we run <code>spark.catalog.listTables()</code> , we will obtain an empty list.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># 3. Register ``df_spark`` as a temporary table named &quot;temp&quot;  </span>
+<div class="highlight"><pre><span></span><span class="c1"># 3. Register ``df_spark`` as a temporary table named &quot;temp&quot;  </span>
 <span class="n">df_spark</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>After the registration, when we run  <code>spark.catalog.listTables()</code>, we get:</p>
-<div class="highlight"><pre><span></span><code><span class="p">[</span><span class="n">Table</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;temp&#39;</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tableType</span><span class="o">=</span><span class="s1">&#39;TEMPORARY&#39;</span><span class="p">,</span> <span class="n">isTemporary</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Table</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;temp&#39;</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tableType</span><span class="o">=</span><span class="s1">&#39;TEMPORARY&#39;</span><span class="p">,</span> <span class="n">isTemporary</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
+</pre></div>
+
 
 <h3>Approach 2: Single-step pyspark loading</h3>
-<div class="highlight"><pre><span></span><code><span class="c1"># [IMPORTANT] We need to first add the file path to sparkContextfrom pyspark import SparkFilesspark.sparkContext.addFile(data_path)  </span>
+<div class="highlight"><pre><span></span><span class="c1"># [IMPORTANT] We need to first add the file path to sparkContextfrom pyspark import SparkFilesspark.sparkContext.addFile(data_path)  </span>
 <span class="n">df_spark</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span>  
     <span class="s2">&quot;file://&quot;</span> <span class="o">+</span> <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;titanic.csv&quot;</span><span class="p">),</span>  
     <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>  
 <span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Note that the use of <code>sparkContent</code> is necessary. If we directly feed <code>data_path</code> to <code>spark.read.csv</code>, we will get error messages that look like this:
 <img alt="pyspark error" src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/6158d6cb-f05a-4a2e-a438-69f4d5837138/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210103%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Date=20210103T230406Z&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=392932fc7aefabb6ccb52ca0b3b7ddb2e83a33e2e6b091cf65be142cbbd864c6&amp;X-Amz-SignedHeaders=host&amp;response-content-disposition=filename%20%3D%22Untitled.png%22"></p>
 <h2>Wrap Up</h2>
 <p>Both approaches generate the same spark dataframe ready for querying.</p>
-<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">df_spark</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df_spark</span><span class="p">)</span>
 <span class="n">Output</span><span class="p">:</span>  
 <span class="n">DataFrame</span><span class="p">[</span><span class="n">Survived</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Age</span><span class="p">:</span> <span class="n">double</span><span class="p">,</span> <span class="n">Fare</span><span class="p">:</span> <span class="n">double</span><span class="p">,</span> <span class="n">Pclass_1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Pclass_2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Pclass_3</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Sex_female</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Sex_male</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">SibSp_0</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">SibSp_1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">SibSp_2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">SibSp_3</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">SibSp_4</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">SibSp_5</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">SibSp_8</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Parch_0</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Parch_1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Parch_2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Parch_3</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Parch_4</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Parch_5</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Parch_6</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Embarked_C</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Embarked_Q</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Embarked_S</span><span class="p">:</span> <span class="nb">int</span><span class="p">]</span>
-</code></pre></div>
+</pre></div>
+
 
 <h2>More Notes to be Made</h2>
 <p>Relevant notes that are in the plans:</p>
