@@ -43,9 +43,11 @@
 <p>Because the dimension of the feature space is small (even after the feature engineering steps described in later sections), deep learning algorithms are not considered and we focus primarily on ensemble algorithms that use decision tree classifiers as base learners.</p>
 </blockquote>
 <p>This goes to show that both n and m needs to be sufficiently large for deep learning.</p>
-<p>Also, as a refresh, let's keep the following heuristics in mind as well (Ref1):
-* For clean data, the number of samples need to be at least 10x of the number of features
-* For noisy data, this ratio could go up to 100x or even 1000x more</p>
+<p>Also, as a refresh, let's keep the following heuristics in mind as well (Ref1):</p>
+<ul>
+<li>For clean data, the number of samples need to be at least 10x of the number of features</li>
+<li>For noisy data, this ratio could go up to 100x or even 1000x more</li>
+</ul>
 <h2>What is ensemble learning?</h2>
 <p>Ensemble learning is a technique for aggregating predictions obtained from a group of base predictors. These base predictors could be trained in parallel with each predictors working on a different random subset of the training data, or they could be trained sequentially with each added learner working on improving the predictions of its predecessor.</p>
 <h2>Different flavors of ensemble learning</h2>
