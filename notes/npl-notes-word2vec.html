@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
+        <title>Notes on ensemble learnings</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <meta name="description" content="Refresh word2vec" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Shan's Second Brain</a></h1>
+                <nav><ul>
+                    <li><a href="/pages/About.html">About</a></li>
+                    <li><a href="/category/data-science.html">Data Science</a></li>
+                    <li class="active"><a href="/category/machine-learning.html">Machine Learning</a></li>
+                    <li><a href="/category/reading-list.html">Reading List</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/notes/npl-notes-word2vec.html" rel="bookmark"
+           title="Permalink to Notes on ensemble learnings">Notes on ensemble learnings</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2021-01-11T00:00:00-08:00">
+                Published: Mon 11 January 2021
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shan-dou.html">Shan Dou</a>
+        </address>
+<p>In <a href="/category/machine-learning.html">Machine Learning</a>.</p>
+<p>tags: <a href="/tag/ml.html">ml</a> <a href="/tag/nlp.html">nlp</a> </p>
+</footer><!-- /.post-info -->      <h2>Before we begin: Deep learnings vs. Ensemble, how to pick?</h2>
+<p>General rule of thumb to follow is to check the dimension of the features space (and of course, the number of samples we have). One interesting case in the <a href="https://github.com/shandou/MLND_capstone/blob/master/MLNDcapstone_report_final.pdf">click fraud detection example</a> I had worked on back in 2018 is "large n (number of samples) but small m (number of features)". </p>
+<blockquote>
+<p>Because the dimension of the feature space is small (even after the feature engineering steps described in later sections), deep learning algorithms are not considered and we focus primarily on ensemble algorithms that use decision tree classifiers as base learners.</p>
+</blockquote>
+<p>This goes to show that both n and m needs to be sufficiently large for deep learning.</p>
+<p>Also, as a refresh, let's keep the following heuristics in mind as well (Ref1):</p>
+<ul>
+<li>For clean data, the number of samples need to be at least 10x of the number of features</li>
+<li>For noisy data, this ratio could go up to 100x or even 1000x more</li>
+</ul>
+<h2>What is ensemble learning?</h2>
+<p>Ensemble learning is a technique for aggregating predictions obtained from a group of base predictors. These base predictors could be trained in parallel with each predictors working on a different random subset of the training data, or they could be trained sequentially with each added learner working on improving the predictions of its predecessor.</p>
+<h2>Different flavors of ensemble learning</h2>
+<h3>Bagging and pasting</h3>
+<p>They are the <strong>parallel</strong> ensembles (i.e., each base learner works on a subset of training data). For such ensembles, when the aggregated predictions are computed with a simple average across the predictions of all individual learnings, we call it <strong>bagging</strong> (when training data sampling is performed with replacement) or <strong>pasting</strong> (when training data sampling is performed without replacement) ensemble. Random forest is a classic example of the bagging ensemble (with the same base learner type in this case). It makes predictions by averaging the predictions of a group of decision trees that each works on a different random subset of the training data (sampled with raplacement).</p>
+<h3>Boosting</h3>
+<p>Boosting ensemble refers to the technique of training a group of predictors sequentially, with each of the added predictor working on improving the predictions of its predecessor. <strong>Adaptive boosting</strong> and <strong>gradient boosting</strong> are the two major type of boosting:
+* For adaptive boosting, the predictions of each precedessor are used to assign weights to the training data for its successor, and the predction aggregation is achieved by taking a weighted average over the predictions of all predictors (The better performed predictor earns a higher weight in the wweighted average)
+* For gradient boosting, instead of using predecessor to tweak the weights of the training data and the predictors, each predictor is added to the sequence to fit the residual error of its predecessor.</p>
+<blockquote>
+<p><strong><em>NOTE</em></strong> If you ever wonder why in xgboost we call the number of trees "the number of boosting round", think of what we are doing in boosting--we are adding <strong><em>a tree</em></strong> in <strong><em>each boosting round</em></strong> to improve the predecessor.</p>
+</blockquote>
+<h3>Stacking</h3>
+<p>Stacking refers to the approach used to aggregate the predictions. Instead of taking a simple average like in bagging and adaptive boosting, stacking ensemble trains a meta learner (also known as a <strong><em>blender</em></strong>) to perform the aggregation. In this way, stacking makes the aggregation step more objective and allows great flexibility in the structure of the ensemble. For example, one can use a multilayer stacking in which the first few meta-learner layers are several different blenders and the last meta-learner layer is a single blender tha carries out the final aggregation.</p>
+<blockquote>
+<p><strong><em>CAUTION</em></strong> Blender is more objective and flexible than simple averaging or voting, but it comes with the price that we must split the data further--not only to train individual predictors, but also to train the blender itself. When data size is limited, simple aggregation would do the trick just fine :)</p>
+</blockquote>
+<h2>Good libraries</h2>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Ensemble type</th>
+<th>Library implementations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Random forest</td>
+<td>Bagging</td>
+<td>sklearn.ensemble.RandomForestClassifier/Regressor</td>
+</tr>
+<tr>
+<td>Stacking</td>
+<td>Stacking</td>
+<td>mlens.ensemble.SuperLearner</td>
+</tr>
+<tr>
+<td>Extreme gradient boosting</td>
+<td>Gradient boosting</td>
+<td>xgboost.XGBClassifier/Regressor</td>
+</tr>
+<tr>
+<td>Light gradient boosting</td>
+<td>Gradient boosting</td>
+<td>lightgbm.LGBMClassifier/Regressor</td>
+</tr>
+</tbody>
+</table>
+<h2>References</h2>
+<ol>
+<li>StackExchange thread <a href="https://stats.stackexchange.com/questions/257292/minimum-training-size-for-simple-neural-net">"Minimum Training size for simple neural net"</a></li>
+<li>Aurélien Géron, Sep 2019, "Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow, 2nd Edition", O'Reilly Media, Inc.</li>
+</ol>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="https://getpelican.com/">Pelican</a></li>
+                            <li><a href="https://www.python.org/">Python.org</a></li>
+                            <li><a href="https://palletsprojects.com/p/jinja/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

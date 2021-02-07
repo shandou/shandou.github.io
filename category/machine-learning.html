@@ -20,7 +20,79 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/notes/ensemble-ml-notes.html">Notes on ensemble learnings</a></h1>
+                    <h1 class="entry-title"><a href="/notes/cross-validation-ml-notes.html">The What and How on Cross-Validation for Supervised Learning</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2021-02-06T00:00:00-08:00">
+                Published: Sat 06 February 2021
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shan-dou.html">Shan Dou</a>
+        </address>
+<p>In <a href="/category/machine-learning.html">Machine Learning</a>.</p>
+<p>tags: <a href="/tag/ml.html">ml</a> <a href="/tag/cross-validation.html">cross-validation</a> </p>
+</footer><!-- /.post-info --><h2>The Dichotomy Between Test and Validation</h2>
+<h3>1. Metamorphic explainer for visceral mental imageries</h3>
+<p>Given the powerful effect of association and mental imagery, we start this note with an analogy: If we think of supervised learning tasks as a stage play or a high-stake exam, validations are the dress rehearsals or the mock exams we carry out to (1) test our strategy/knowledge in a safe environment and (2) form feedback loops for improving our strategy/knowledge based on the validation outcome. Similarly, we can view tests as the “moment-of-truth” real contest or actual stage play.</p>
+<h3>2. More rigorous explainer</h3>
+<p>In more formal language, validation is part of the training data that are partitioned out as a proxy of test datasets to give us some insight into the predictive capability of the model. Put it more concretely, validation serves two main purposes under the umbrella of model selection:
+1. Select among different models based on validation scores
+2. Select optimal combinations of hyperparameters for each given model
+In practice, these two activities are carried out in parallel in scikit learn classes GridSearchCV and RandomizedSearchCV .</p>
+<h2>What Is the “Cross” for in Cross-Validation?</h2>
+<p>“Cross” has two layers of meaning:
+1. Signifies the use of sampling without replacement so that each training example is used in training and validation exactly once. The opposite of this approach — sampling with replacement — can be compared to the ineffective learning strategy of rereading repeatedly and being fooled by the illusion of knowing.
+2. Circumvents the risk of fitting to the model to a particular way of partition the train vs. validation sets. For example, for a 5-fold cross-validation, if we simply do the partition and arbitrarily decide to only carry out validation once with the first chunk of the dataset as the validation, we could get unlucky that some systematic biases happen to be present in such partitioning and the model ends up being distracted by such noises.</p>
+<h2>Why Are Validation and Test Both Necessary?</h2>
+<p>During validation, we expose the model to all the examples in the training data. The risk here is that we cultivate a sense of familiarity for the model that is easy to confuse rote memorization with actual learning. And also like real-life situations when we could think that we had mastered the test materials but ended up doing poorly in the real exams, the test is necessary to — well, really put the model’s learning into tests.</p>
+<h2>Best Practices</h2>
+<p>The following guidelines can be found in Raschka and Mirjalili (2019):
+1. For data sizes that are not too large or too small, a good standard value for k in k-fold cross-validation is 10. <mark>10-fold CV</mark> is suggested to achieve the best tradeoff between bias and variance
+2. A general rule of thumb is: We <mark>increase</mark> the k values in k-fold CV when the data size is <mark>small</mark>. One core reason behind this rule is to maximize the size of training data in each CV iteration. Otherwise, because the data size is already very small to start with, we risk having “pessimistic bias” when estimating model performance. One extreme approach for very small training data is the “leave-one-out cross-validation” (LOOCV); In LOOCV, the number of folds equals the total number of training examples. In each CV iteration, only one training example is treated as validation data.
+3. By contrast, when we work with a <mark>large</mark> dataset, the concern shifts toward <mark>computation costs and agility in parameter adjustment</mark>. This is when we want to decrease k values (e.g., k = 5 could be a good start)</p>
+<h2>Closing Words</h2>
+<p>Things that seem trivial may not easily be articulated. Same as the “putting our learning to tests” argument, articulating and forming associations and intuitions around core (and seemingly trivial) concepts are a crucial part of mastery.</p>
+<h2>References</h2>
+<ol>
+<li>Browlee, J., 2017, <a href="https://machinelearningmastery.com/difference-test-validation-datasets/">“What is the Difference Between Test and Validation Datasets?” blog post</a>.</li>
+<li>Raschka, S. and Mirjalili, V., 2019, “Learning Best Practices for Model Evaluation and Hyperparameter Tuning”, <a href="https://www.packtpub.com/product/python-machine-learning-third-edition/9781789955750">Python Machine Learning — Third Edition</a>.</li>
+<li>Brown, P.C., Roediger H.L., and McDaniel, 2014, “Avoid Illusions of Knowing”, <a href="https://www.goodreads.com/book/show/18770267-make-it-stick">Make It Stick: The Science of Successful Learning</a>.</li>
+</ol>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/notes/npl-notes-word2vec.html" rel="bookmark"
+                           title="Permalink to Notes on ensemble learnings">Notes on ensemble learnings</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2021-01-11T00:00:00-08:00">
+                Published: Mon 11 January 2021
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shan-dou.html">Shan Dou</a>
+        </address>
+<p>In <a href="/category/machine-learning.html">Machine Learning</a>.</p>
+<p>tags: <a href="/tag/ml.html">ml</a> <a href="/tag/nlp.html">nlp</a> </p>
+</footer><!-- /.post-info -->                <p>Refresh word2vec</p>
+                <a class="readmore" href="/notes/npl-notes-word2vec.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/notes/ensemble-ml-notes.html" rel="bookmark"
+                           title="Permalink to Notes on ensemble learnings">Notes on ensemble learnings</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2021-01-06T00:00:00-08:00">
                 Published: Wed 06 January 2021
@@ -31,76 +103,10 @@
         </address>
 <p>In <a href="/category/machine-learning.html">Machine Learning</a>.</p>
 <p>tags: <a href="/tag/ml.html">ml</a> <a href="/tag/ensemble.html">ensemble</a> </p>
-</footer><!-- /.post-info --><h2>Before we begin: Deep learnings vs. Ensemble, how to pick?</h2>
-<p>General rule of thumb to follow is to check the dimension of the features space (and of course, the number of samples we have). One interesting case in the <a href="https://github.com/shandou/MLND_capstone/blob/master/MLNDcapstone_report_final.pdf">click fraud detection example</a> I had worked on back in 2018 is "large n (number of samples) but small m (number of features)". </p>
-<blockquote>
-<p>Because the dimension of the feature space is small (even after the feature engineering steps described in later sections), deep learning algorithms are not considered and we focus primarily on ensemble algorithms that use decision tree classifiers as base learners.</p>
-</blockquote>
-<p>This goes to show that both n and m needs to be sufficiently large for deep learning.</p>
-<p>Also, as a refresh, let's keep the following heuristics in mind as well (Ref1):</p>
-<ul>
-<li>For clean data, the number of samples need to be at least 10x of the number of features</li>
-<li>For noisy data, this ratio could go up to 100x or even 1000x more</li>
-</ul>
-<h2>What is ensemble learning?</h2>
-<p>Ensemble learning is a technique for aggregating predictions obtained from a group of base predictors. These base predictors could be trained in parallel with each predictors working on a different random subset of the training data, or they could be trained sequentially with each added learner working on improving the predictions of its predecessor.</p>
-<h2>Different flavors of ensemble learning</h2>
-<h3>Bagging and pasting</h3>
-<p>They are the <strong>parallel</strong> ensembles (i.e., each base learner works on a subset of training data). For such ensembles, when the aggregated predictions are computed with a simple average across the predictions of all individual learnings, we call it <strong>bagging</strong> (when training data sampling is performed with replacement) or <strong>pasting</strong> (when training data sampling is performed without replacement) ensemble. Random forest is a classic example of the bagging ensemble (with the same base learner type in this case). It makes predictions by averaging the predictions of a group of decision trees that each works on a different random subset of the training data (sampled with raplacement).</p>
-<h3>Boosting</h3>
-<p>Boosting ensemble refers to the technique of training a group of predictors sequentially, with each of the added predictor working on improving the predictions of its predecessor. <strong>Adaptive boosting</strong> and <strong>gradient boosting</strong> are the two major type of boosting:
-* For adaptive boosting, the predictions of each precedessor are used to assign weights to the training data for its successor, and the predction aggregation is achieved by taking a weighted average over the predictions of all predictors (The better performed predictor earns a higher weight in the wweighted average)
-* For gradient boosting, instead of using predecessor to tweak the weights of the training data and the predictors, each predictor is added to the sequence to fit the residual error of its predecessor.</p>
-<blockquote>
-<p><strong><em>NOTE</em></strong> If you ever wonder why in xgboost we call the number of trees "the number of boosting round", think of what we are doing in boosting--we are adding <strong><em>a tree</em></strong> in <strong><em>each boosting round</em></strong> to improve the predecessor.</p>
-</blockquote>
-<h3>Stacking</h3>
-<p>Stacking refers to the approach used to aggregate the predictions. Instead of taking a simple average like in bagging and adaptive boosting, stacking ensemble trains a meta learner (also known as a <strong><em>blender</em></strong>) to perform the aggregation. In this way, stacking makes the aggregation step more objective and allows great flexibility in the structure of the ensemble. For example, one can use a multilayer stacking in which the first few meta-learner layers are several different blenders and the last meta-learner layer is a single blender tha carries out the final aggregation.</p>
-<blockquote>
-<p><strong><em>CAUTION</em></strong> Blender is more objective and flexible than simple averaging or voting, but it comes with the price that we must split the data further--not only to train individual predictors, but also to train the blender itself. When data size is limited, simple aggregation would do the trick just fine :)</p>
-</blockquote>
-<h2>Good libraries</h2>
-<table>
-<thead>
-<tr>
-<th>Algorithm</th>
-<th>Ensemble type</th>
-<th>Library implementations</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Random forest</td>
-<td>Bagging</td>
-<td>sklearn.ensemble.RandomForestClassifier/Regressor</td>
-</tr>
-<tr>
-<td>Stacking</td>
-<td>Stacking</td>
-<td>mlens.ensemble.SuperLearner</td>
-</tr>
-<tr>
-<td>Extreme gradient boosting</td>
-<td>Gradient boosting</td>
-<td>xgboost.XGBClassifier/Regressor</td>
-</tr>
-<tr>
-<td>Light gradient boosting</td>
-<td>Gradient boosting</td>
-<td>lightgbm.LGBMClassifier/Regressor</td>
-</tr>
-</tbody>
-</table>
-<h2>References</h2>
-<ol>
-<li>StackExchange thread <a href="https://stats.stackexchange.com/questions/257292/minimum-training-size-for-simple-neural-net">"Minimum Training size for simple neural net"</a></li>
-<li>Aurélien Géron, Sep 2019, "Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow, 2nd Edition", O'Reilly Media, Inc.</li>
-</ol>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</footer><!-- /.post-info -->                <p>Refresh old notes on ensemble learning</p>
+                <a class="readmore" href="/notes/ensemble-ml-notes.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
