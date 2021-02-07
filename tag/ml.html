@@ -40,16 +40,20 @@
 2. Select optimal combinations of hyperparameters for each given model
 In practice, these two activities are carried out in parallel in scikit learn classes GridSearchCV and RandomizedSearchCV .</p>
 <h2>What Is the “Cross” for in Cross-Validation?</h2>
-<p>“Cross” has two layers of meaning:
-1. Signifies the use of sampling without replacement so that each training example is used in training and validation exactly once. The opposite of this approach — sampling with replacement — can be compared to the ineffective learning strategy of rereading repeatedly and being fooled by the illusion of knowing.
-2. Circumvents the risk of fitting to the model to a particular way of partition the train vs. validation sets. For example, for a 5-fold cross-validation, if we simply do the partition and arbitrarily decide to only carry out validation once with the first chunk of the dataset as the validation, we could get unlucky that some systematic biases happen to be present in such partitioning and the model ends up being distracted by such noises.</p>
+<p>“Cross” has two layers of meaning:</p>
+<ol>
+<li>Signifies the use of sampling without replacement so that each training example is used in training and validation exactly once. The opposite of this approach — sampling with replacement — can be compared to the ineffective learning strategy of rereading repeatedly and being fooled by the illusion of knowing.</li>
+<li>Circumvents the risk of fitting to the model to a particular way of partition the train vs. validation sets. For example, for a 5-fold cross-validation, if we simply do the partition and arbitrarily decide to only carry out validation once with the first chunk of the dataset as the validation, we could get unlucky that some systematic biases happen to be present in such partitioning and the model ends up being distracted by such noises.</li>
+</ol>
 <h2>Why Are Validation and Test Both Necessary?</h2>
 <p>During validation, we expose the model to all the examples in the training data. The risk here is that we cultivate a sense of familiarity for the model that is easy to confuse rote memorization with actual learning. And also like real-life situations when we could think that we had mastered the test materials but ended up doing poorly in the real exams, the test is necessary to really put the model’s learning into tests.</p>
 <h2>Best Practices</h2>
-<p>The following guidelines can be found in Raschka and Mirjalili (2019):
-1. For data sizes that are not too large or too small, a good standard value for k in k-fold cross-validation is 10. <mark>10-fold CV</mark> is suggested to achieve the best tradeoff between bias and variance
-2. A general rule of thumb is: We <mark>increase</mark> the k values in k-fold CV when the data size is <mark>small</mark>. One core reason behind this rule is to maximize the size of training data in each CV iteration. Otherwise, because the data size is already very small to start with, we risk having “pessimistic bias” when estimating model performance. One extreme approach for very small training data is the “leave-one-out cross-validation” (LOOCV); In LOOCV, the number of folds equals the total number of training examples. In each CV iteration, only one training example is treated as validation data.
-3. By contrast, when we work with a <mark>large</mark> dataset, the concern shifts toward <mark>computation costs and agility in parameter adjustment</mark>. This is when we want to decrease k values (e.g., k = 5 could be a good start)</p>
+<p>The following guidelines can be found in Raschka and Mirjalili (2019):</p>
+<ol>
+<li>For data sizes that are not too large or too small, a good standard value for k in k-fold cross-validation is 10. <mark>10-fold CV</mark> is suggested to achieve the best tradeoff between bias and variance</li>
+<li>A general rule of thumb is: We <mark>increase</mark> the k values in k-fold CV when the data size is <mark>small</mark>. One core reason behind this rule is to maximize the size of training data in each CV iteration. Otherwise, because the data size is already very small to start with, we risk having “pessimistic bias” when estimating model performance. One extreme approach for very small training data is the “leave-one-out cross-validation” (LOOCV); In LOOCV, the number of folds equals the total number of training examples. In each CV iteration, only one training example is treated as validation data.</li>
+<li>By contrast, when we work with a <mark>large</mark> dataset, the concern shifts toward <mark>computation costs and agility in parameter adjustment</mark>. This is when we want to decrease k values (e.g., k = 5 could be a good start)</li>
+</ol>
 <h2>Closing Words</h2>
 <p>Things that seem trivial may not easily be articulated. Same as the “putting our learning to tests” argument, articulating and forming associations and intuitions around core (and seemingly trivial) concepts are a crucial part of mastery.</p>
 <h2>References</h2>
