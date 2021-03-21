@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
+        <title>Shan's Second Brain - Good Practice</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Shan's Second Brain</a></h1>
+                <nav><ul>
+                    <li><a href="/pages/About.html">About</a></li>
+                    <li><a href="/category/data-science.html">Data Science</a></li>
+                    <li class="active"><a href="/category/good-practice.html">Good Practice</a></li>
+                    <li><a href="/category/machine-learning.html">Machine Learning</a></li>
+                    <li><a href="/category/reading-list.html">Reading List</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/notes/efficient-python-notes.html">Notes on Improving Python Code Efficiency (1)</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2021-03-20T00:00:00-07:00">
+                Published: Sat 20 March 2021
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shan-dou.html">Shan Dou</a>
+        </address>
+<p>In <a href="/category/good-practice.html">Good Practice</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/engineering.html">engineering</a> </p>
+</footer><!-- /.post-info --><p>An interesting learning on code efficiency today is on the performance difference between <strong><em>formal</em></strong> and <strong><em>literal</em></strong> definitions of common python data structures. In a nutshell, <strong><em>literal definition is more performant</em></strong> and should be preferred (while having readability in mind).</p>
+<h2>Formal vs. Literal Definition</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>dictionary</th>
+<th>list</th>
+<th>tuple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Formal definition</td>
+<td><code>dict()</code></td>
+<td><code>list()</code></td>
+<td><code>tuple()</code></td>
+</tr>
+<tr>
+<td>Literal definition</td>
+<td><code>{}</code></td>
+<td><code>[]</code></td>
+<td><code>()</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Run Time Comparisons</h2>
+<div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="o">%</span><span class="n">timeit</span> <span class="o">-</span><span class="n">r10</span> <span class="o">-</span><span class="n">n100</span> <span class="nb">list</span><span class="p">()</span>
+<span class="mf">86.9</span> <span class="n">ns</span> <span class="err">±</span> <span class="mf">2.21</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">10</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="o">%</span><span class="n">timeit</span> <span class="o">-</span><span class="n">r10</span> <span class="o">-</span><span class="n">n100</span> <span class="p">[]</span>
+<span class="mf">26.3</span> <span class="n">ns</span> <span class="err">±</span> <span class="mf">0.98</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">10</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+</pre></div>
+
+
+<p>We can see from this example that the literal definition is about 3 times faster than its formal-definition counterpart.</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="https://getpelican.com/">Pelican</a></li>
+                            <li><a href="https://www.python.org/">Python.org</a></li>
+                            <li><a href="https://palletsprojects.com/p/jinja/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

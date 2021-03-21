@@ -13,6 +13,7 @@
                 <nav><ul>
                     <li><a href="/pages/About.html">About</a></li>
                     <li><a href="/category/data-science.html">Data Science</a></li>
+                    <li><a href="/category/good-practice.html">Good Practice</a></li>
                     <li><a href="/category/machine-learning.html">Machine Learning</a></li>
                     <li><a href="/category/reading-list.html">Reading List</a></li>
                 </ul></nav>
@@ -20,7 +21,66 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/notes/cross-validation-ml-notes.html">The What and How on Cross-Validation for Supervised Learning</a></h1>
+                    <h1 class="entry-title"><a href="/notes/efficient-python-notes.html">Notes on Improving Python Code Efficiency (1)</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2021-03-20T00:00:00-07:00">
+                Published: Sat 20 March 2021
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shan-dou.html">Shan Dou</a>
+        </address>
+<p>In <a href="/category/good-practice.html">Good Practice</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/engineering.html">engineering</a> </p>
+</footer><!-- /.post-info --><p>An interesting learning on code efficiency today is on the performance difference between <strong><em>formal</em></strong> and <strong><em>literal</em></strong> definitions of common python data structures. In a nutshell, <strong><em>literal definition is more performant</em></strong> and should be preferred (while having readability in mind).</p>
+<h2>Formal vs. Literal Definition</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>dictionary</th>
+<th>list</th>
+<th>tuple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Formal definition</td>
+<td><code>dict()</code></td>
+<td><code>list()</code></td>
+<td><code>tuple()</code></td>
+</tr>
+<tr>
+<td>Literal definition</td>
+<td><code>{}</code></td>
+<td><code>[]</code></td>
+<td><code>()</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Run Time Comparisons</h2>
+<div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="o">%</span><span class="n">timeit</span> <span class="o">-</span><span class="n">r10</span> <span class="o">-</span><span class="n">n100</span> <span class="nb">list</span><span class="p">()</span>
+<span class="mf">86.9</span> <span class="n">ns</span> <span class="err">±</span> <span class="mf">2.21</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">10</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="o">%</span><span class="n">timeit</span> <span class="o">-</span><span class="n">r10</span> <span class="o">-</span><span class="n">n100</span> <span class="p">[]</span>
+<span class="mf">26.3</span> <span class="n">ns</span> <span class="err">±</span> <span class="mf">0.98</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">10</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+</pre></div>
+
+
+<p>We can see from this example that the literal definition is about 3 times faster than its formal-definition counterpart.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/notes/cross-validation-ml-notes.html" rel="bookmark"
+                           title="Permalink to The What and How on Cross-Validation for Supervised Learning">The What and How on Cross-Validation for Supervised Learning</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2021-02-06T00:00:00-08:00">
                 Published: Sat 06 February 2021
@@ -31,58 +91,10 @@
         </address>
 <p>In <a href="/category/machine-learning.html">Machine Learning</a>.</p>
 <p>tags: <a href="/tag/ml.html">ml</a> <a href="/tag/cross-validation.html">cross-validation</a> </p>
-</footer><!-- /.post-info --><h2>The Dichotomy Between Test and Validation</h2>
-<h3>1. Metamorphic explainer for visceral mental imageries</h3>
-<p>Given the powerful effect of association and mental imagery, we start this note with an analogy: If we think of supervised learning tasks as a stage play or a high-stake exam, validations are the dress rehearsals or the mock exams we carry out to (1) test our strategy/knowledge in a safe environment and (2) form feedback loops for improving our strategy/knowledge based on the validation outcome. Similarly, we can view tests as the “moment-of-truth” real contest or actual stage play.</p>
-<h3>2. More rigorous explainer</h3>
-<p>In more formal language, validation is part of the training data that are partitioned out as a proxy of test datasets to give us some insight into the predictive capability of the model. Put it more concretely, validation serves two main purposes under the umbrella of model selection:</p>
-<ol>
-<li>
-<p>Select among different models based on validation scores</p>
-</li>
-<li>
-<p>Select optimal combinations of hyperparameters for each given model
-In practice, these two activities are carried out in parallel in scikit learn classes GridSearchCV and RandomizedSearchCV .</p>
-</li>
-</ol>
-<h2>What Is the “Cross” for in Cross-Validation?</h2>
-<p>“Cross” has two layers of meaning:</p>
-<ol>
-<li>
-<p>Signifies the use of sampling without replacement so that each training example is used in training and validation exactly once. The opposite of this approach — sampling with replacement — can be compared to the ineffective learning strategy of rereading repeatedly and being fooled by the illusion of knowing.</p>
-</li>
-<li>
-<p>Circumvents the risk of fitting to the model to a particular way of partition the train vs. validation sets. For example, for a 5-fold cross-validation, if we simply do the partition and arbitrarily decide to only carry out validation once with the first chunk of the dataset as the validation, we could get unlucky that some systematic biases happen to be present in such partitioning and the model ends up being distracted by such noises.</p>
-</li>
-</ol>
-<h2>Why Are Validation and Test Both Necessary?</h2>
-<p>During validation, we expose the model to all the examples in the training data. The risk here is that we cultivate a sense of familiarity for the model that is easy to confuse rote memorization with actual learning. And also like real-life situations when we could think that we had mastered the test materials but ended up doing poorly in the real exams, the test is necessary to really put the model’s learning into tests.</p>
-<h2>Best Practices</h2>
-<p>The following guidelines can be found in Raschka and Mirjalili (2019):</p>
-<ol>
-<li>
-<p>For data sizes that are not too large or too small, a good standard value for k in k-fold cross-validation is 10. <mark>10-fold CV</mark> is suggested to achieve the best tradeoff between bias and variance</p>
-</li>
-<li>
-<p>A general rule of thumb is: We <mark>increase</mark> the k values in k-fold CV when the data size is <mark>small</mark>. One core reason behind this rule is to maximize the size of training data in each CV iteration. Otherwise, because the data size is already very small to start with, we risk having “pessimistic bias” when estimating model performance. One extreme approach for very small training data is the “leave-one-out cross-validation” (LOOCV); In LOOCV, the number of folds equals the total number of training examples. In each CV iteration, only one training example is treated as validation data.</p>
-</li>
-<li>
-<p>By contrast, when we work with a <mark>large</mark> dataset, the concern shifts toward <mark>computation costs and agility in parameter adjustment</mark>. This is when we want to decrease k values (e.g., k = 5 could be a good start)</p>
-</li>
-</ol>
-<h2>Closing Words</h2>
-<p>Things that seem trivial may not easily be articulated. Same as the “putting our learning to tests” argument, articulating and forming associations and intuitions around core (and seemingly trivial) concepts are a crucial part of mastery.</p>
-<h2>References</h2>
-<ol>
-<li>Browlee, J., 2017, <a href="https://machinelearningmastery.com/difference-test-validation-datasets/">“What is the Difference Between Test and Validation Datasets?” blog post</a>.</li>
-<li>Raschka, S. and Mirjalili, V., 2019, “Learning Best Practices for Model Evaluation and Hyperparameter Tuning”, <a href="https://www.packtpub.com/product/python-machine-learning-third-edition/9781789955750">Python Machine Learning — Third Edition</a>.</li>
-<li>Brown, P.C., Roediger H.L., and McDaniel, 2014, “Avoid Illusions of Knowing”, <a href="https://www.goodreads.com/book/show/18770267-make-it-stick">Make It Stick: The Science of Successful Learning</a>.</li>
-</ol>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</footer><!-- /.post-info -->                <p>Refresh old notes on ensemble learning</p>
+                <a class="readmore" href="/notes/cross-validation-ml-notes.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
