@@ -21,7 +21,92 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/notes/efficient-python-notes.html">Notes on Improving Python Code Efficiency (1)</a></h1>
+                    <h1 class="entry-title"><a href="/notes/linear-regression.html">Linear Regression: From Data Simulation to Modeling to Assumption Articulation</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2021-04-07T00:00:00-07:00">
+                Published: Wed 07 April 2021
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shan-dou.html">Shan Dou</a>
+        </address>
+<p>In <a href="/category/machine-learning.html">Machine Learning</a>.</p>
+<p>tags: <a href="/tag/machine-learning.html">machine-learning</a> </p>
+</footer><!-- /.post-info --><p>This is a note of my interview fail retrospectives...</p>
+<h1>Task description</h1>
+<p>Simulate data of 5 features x 10000 rows with Gaussian noise standard deviation of 10. Write out the training and testing procedure.</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+
+
+<span class="c1"># ======= Part 1: Data simulation =======</span>
+<span class="c1"># Specify feature dimensions</span>
+<span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span> <span class="o">=</span> <span class="mi">100000</span><span class="p">,</span> <span class="mi">5</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>
+
+<span class="c1"># Specify synthetic model parameters in weights and bias (intercept)</span>
+<span class="n">w</span><span class="p">,</span> <span class="n">bias</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">]),</span> <span class="mi">15</span>
+<span class="c1"># Gnerate Gaussian residual as required by the task</span>
+<span class="n">error_residual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)</span>
+<span class="c1"># Perform dot product to generate prediction target</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">+</span> <span class="n">bias</span> <span class="o">+</span> <span class="n">error_residual</span>
+
+
+<span class="c1"># ======= Part 2: Modeling =======</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+<span class="n">X_train_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+<span class="c1"># Out: 0.9224441433425903</span>
+
+
+<span class="c1"># Manually implement r_squared</span>
+<span class="n">explained_variance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">y_test</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">residual_variance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">y_test</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">total_variance</span> <span class="o">=</span> <span class="n">explained_variance</span> <span class="o">+</span> <span class="n">residual_variance</span>
+<span class="n">r2_calculated</span> <span class="o">=</span> <span class="n">explained_variance</span> <span class="o">/</span> <span class="n">total_variance</span>
+<span class="c1"># Out: 0.922594062184237</span>
+</pre></div>
+
+
+<h1>Linear regression assumptions</h1>
+<ol>
+<li>
+<p>Error-free predictors:
+   This is an important assumption and also where I made the grave mistake
+   <img alt="image" src="04_07_2021_linear_regression.jpg">
+   (Image source: <a href="https://www.youtube.com/watch?v=0fzbyhWiP84&amp;list=PLG19vXLQHvSC2ZKFIkgVpI9fCjkN38kwf&amp;index=21">GeostatsGuy Lectures</a>)</p>
+</li>
+<li>
+<p>Constant variance: The error is homoscedestic</p>
+</li>
+<li>Relationship between independent and dependent variables is liinear</li>
+<li>Errors are independent of each other (otherwise, this would be an indication that there are additional relationships now accounted for by the model)</li>
+<li>No multicolinearity: Features are not correlated with each other (with redundany)</li>
+</ol>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/notes/efficient-python-notes.html" rel="bookmark"
+                           title="Permalink to Notes on Improving Python Code Efficiency (1)">Notes on Improving Python Code Efficiency (1)</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2021-03-20T00:00:00-07:00">
                 Published: Sat 20 March 2021
@@ -32,54 +117,10 @@
         </address>
 <p>In <a href="/category/good-practice.html">Good Practice</a>.</p>
 <p>tags: <a href="/tag/python.html">python</a> <a href="/tag/engineering.html">engineering</a> </p>
-</footer><!-- /.post-info --><p>An interesting learning on code efficiency today is on the performance difference between <strong><em>formal</em></strong> and <strong><em>literal</em></strong> definitions of common python data structures. In a nutshell, <strong><em>literal definition is more performant</em></strong> and should be preferred (while having readability in mind).</p>
-<h2>Formal vs. Literal Definition</h2>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>dictionary</th>
-<th>list</th>
-<th>tuple</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Formal definition</td>
-<td><code>dict()</code></td>
-<td><code>list()</code></td>
-<td><code>tuple()</code></td>
-</tr>
-<tr>
-<td>Literal definition</td>
-<td><code>{}</code></td>
-<td><code>[]</code></td>
-<td><code>()</code></td>
-</tr>
-</tbody>
-</table>
-<h2>Run Time Comparisons</h2>
-<div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="o">%</span><span class="n">timeit</span> <span class="o">-</span><span class="n">r10</span> <span class="o">-</span><span class="n">n100</span> <span class="nb">list</span><span class="p">()</span>
-<span class="mf">86.9</span> <span class="n">ns</span> <span class="err">±</span> <span class="mf">2.21</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">10</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
-
-<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="o">%</span><span class="n">timeit</span> <span class="o">-</span><span class="n">r10</span> <span class="o">-</span><span class="n">n100</span> <span class="p">[]</span>
-<span class="mf">26.3</span> <span class="n">ns</span> <span class="err">±</span> <span class="mf">0.98</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">10</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
-</pre></div>
-
-
-<p>We can see from this example that the literal definition is about 3 times faster than its formal-definition counterpart.</p>
-<h2><code>%timeit</code> vs. <code>%%timeit</code></h2>
-<ul>
-<li><code>%timeit</code> is a line magic that allows us to check runtime for a single line of code</li>
-<li>Usage <code>%timeit &lt;line of code&gt;</code></li>
-<li><code>%%timeit</code> is a cell magic that is for checking runtime for multiple lines of code</li>
-<li>Usage <code>%%timeit [Shift + Enter] &lt;multiple lines of code&gt;</code></li>
-</ul>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</footer><!-- /.post-info -->                <p>Good tricks on using formal versus literal syntax</p>
+                <a class="readmore" href="/notes/efficient-python-notes.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
@@ -100,28 +141,6 @@
 <p>tags: <a href="/tag/machine-learning.html">machine-learning</a> </p>
 </footer><!-- /.post-info -->                <p>What is machine learning simply explained</p>
                 <a class="readmore" href="/notes/how-does-ml-learn.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/notes/linear-regression.html" rel="bookmark"
-                           title="Permalink to Linear Regression: From Data Simulation to Modeling to Assumption Articulation">Linear Regression: From Data Simulation to Modeling to Assumption Articulation</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2021-03-20T00:00:00-07:00">
-                Published: Sat 20 March 2021
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shan-dou.html">Shan Dou</a>
-        </address>
-<p>In <a href="/category/machine-learning.html">Machine Learning</a>.</p>
-<p>tags: <a href="/tag/machine-learning.html">machine-learning</a> </p>
-</footer><!-- /.post-info -->                <p>Linear regression from data simulation to assumption articulatio</p>
-                <a class="readmore" href="/notes/linear-regression.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 
